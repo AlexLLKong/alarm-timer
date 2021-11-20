@@ -1,6 +1,8 @@
 #pragma once
 #include "wx/wx.h"
 #include "wx/valnum.h"
+#include "wx/sound.h"
+
 class cMain : public wxFrame
 {
 public:
@@ -16,7 +18,7 @@ public:
 	wxButton* startPause = nullptr;
 	wxButton* reset = nullptr;
 	wxTimer* timer = nullptr;
-
+	wxSound* sound = nullptr;
 private: 
 	long timerVal = 0;
 private:

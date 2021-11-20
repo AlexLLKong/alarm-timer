@@ -4,7 +4,7 @@ wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 	EVT_TIMER(10008, OnTimer)
 wxEND_EVENT_TABLE()
 
-cMain::cMain() : wxFrame(nullptr, wxID_ANY, "wow big window", wxPoint(30, 30), wxSize(800, 600))
+cMain::cMain() : wxFrame(nullptr, wxID_ANY, "timer", wxPoint(30, 30), wxSize(550, 180))
 {
 	wxBoxSizer* mSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* timeSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -12,6 +12,8 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "wow big window", wxPoint(30, 30), w
 	wxFont font(72, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
 	wxIntegerValidator<unsigned long> val = wxIntegerValidator<unsigned long>();
 	val.SetMax(59);
+	
+	sound = new wxSound("./coin_sound.wav", false);
 	timer = new wxTimer(this, 10008);
 
 	hr = new wxTextCtrl(this, 10001, "00", wxDefaultPosition, wxSize(120, 100), 0L, val);
@@ -58,6 +60,7 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "wow big window", wxPoint(30, 30), w
 cMain::~cMain()
 {
 	delete[]timer;
+	delete[]sound;
 }
 
 void cMain::OnTextCtrlLoseFocus(wxFocusEvent& evt)
@@ -141,9 +144,14 @@ void cMain::OnTimer(wxTimerEvent& evt)
 		min->SetValue(sv);
 		sv = seconds > 9 ? std::to_string(seconds) : "0" + std::to_string(seconds);
 		sec->SetValue(sv);
+		if (timerVal == 0)
+			sound->Play();
 		timerVal--;
 	}
-	else
+	else 
+	{
 		timer->Stop();
+	}
+	
 	evt.Skip();
 }
